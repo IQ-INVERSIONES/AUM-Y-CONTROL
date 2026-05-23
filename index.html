@@ -193,6 +193,8 @@ td{padding:.45rem .7rem;border-bottom:1px solid rgba(42,53,85,.3);white-space:no
 <div class="kpi-card"><div class="kpi-label">Comisión Total Abril</div><div class="kpi-value green" id="prodTotal">—</div></div>
 <div class="kpi-card"><div class="kpi-label">Comisión Balanz</div><div class="kpi-value" style="color:#5b9cf5" id="prodBalanz">—</div></div>
 <div class="kpi-card"><div class="kpi-label">Comisión Inviu</div><div class="kpi-value" style="color:#00c853" id="prodInviu">—</div></div>
+<div class="kpi-card"><div class="kpi-label">ROA Anual Balanz</div><div class="kpi-value" style="color:#5b9cf5" id="prodROABalanz">—</div></div>
+<div class="kpi-card"><div class="kpi-label">ROA Anual Inviu</div><div class="kpi-value" style="color:#00c853" id="prodROAInviu">—</div></div>
 <div class="kpi-card"><div class="kpi-label">Comisión Anualizada</div><div class="kpi-value" id="prodAnual">—</div></div>
 <div class="kpi-card"><div class="kpi-label">ROA Anual (promedio)</div><div class="kpi-value" style="color:var(--accent-teal)" id="prodROA">—</div></div>
 <div class="kpi-card"><div class="kpi-label">Comisión/Cuenta Prom</div><div class="kpi-value" style="color:var(--accent-gold)" id="prodPerAcct">—</div></div>
@@ -318,14 +320,14 @@ function renderProdKPIs(){
   const avgROA=withAum.length?withAum.reduce((s,p)=>s+p.roa_annual,0)/withAum.length:0;
   const totalAccts=withAum.reduce((s,p)=>s+p.account_count,0);
   const commPerAcct=totalAccts>0?total/totalAccts:0;
-  const totalB=PROD.reduce((s,p)=>s+p.comm_balanz,0);const totalI=PROD.reduce((s,p)=>s+p.comm_inviu,0);document.getElementById('prodTotal').textContent='USD '+fmtCompact(total);document.getElementById('prodBalanz').textContent='USD '+fmtCompact(totalB);document.getElementById('prodInviu').textContent='USD '+fmtCompact(totalI);
+  const totalB=PROD.reduce((s,p)=>s+p.comm_balanz,0);const totalI=PROD.reduce((s,p)=>s+p.comm_inviu,0);document.getElementById('prodTotal').textContent='USD '+fmtCompact(total);document.getElementById('prodBalanz').textContent='USD '+fmtCompact(totalB);document.getElementById('prodInviu').textContent='USD '+fmtCompact(totalI);const roaB=totalB>0?totalB*12/46184298.08*100:0;const roaI=totalI>0?totalI*12/17546253.25*100:0;document.getElementById('prodROABalanz').textContent=roaB.toFixed(2)+'%';document.getElementById('prodROAInviu').textContent=roaI.toFixed(2)+'%';
   document.getElementById('prodAnual').textContent='USD '+fmtCompact(total*12);
   document.getElementById('prodROA').textContent=avgROA.toFixed(2)+'%';
   document.getElementById('prodPerAcct').textContent='USD '+commPerAcct.toFixed(0);
 }
 
 function renderProdPodium(){
-  const top3=PROD.filter(p=>p.commission>0&&p.aum>50000&&p.account_count>=5).sort((a,b)=>b.roa_annual-a.roa_annual).slice(0,3);
+  const top3=PROD.filter(p=>p.commission>=1000&&p.aum>50000&&p.account_count>=5).sort((a,b)=>b.roa_annual-a.roa_annual).slice(0,3);
   const medals=['🥇','🥈','🥉'];
   const colors=['#fbbf24','#94a3b8','#cd7f32'];
   document.getElementById('prodPodium').innerHTML=top3.map((p,i)=>`<div class="analysis-card" style="text-align:center;border-color:${colors[i]};cursor:pointer" onclick="goToAdvisorByName('${p.name.replace(/'/g,"\'")}')"><div style="font-size:1.8rem;margin-bottom:.3rem">${medals[i]}</div><div style="font-size:.85rem;font-weight:700;margin-bottom:.2rem">${p.name}</div><div style="font-family:'Space Mono',monospace;font-size:1.1rem;font-weight:700;color:var(--accent-teal);margin-bottom:.2rem">ROA ${p.roa_annual.toFixed(2)}%</div><div style="font-size:.7rem;color:var(--text-secondary)">USD ${fmtCompact(p.commission)} comisión · ${p.account_count} ctas</div><div style="font-size:.65rem;color:var(--text-muted);margin-top:.2rem">USD ${p.comm_per_account.toFixed(0)}/cuenta</div></div>`).join('');
@@ -335,7 +337,7 @@ function renderProdChart(){
   if(prodChartInst)return;
   const ctx=document.getElementById('prodChart');
   if(!ctx)return;
-  const d=PROD.filter(p=>p.commission>0&&p.aum>50000).sort((a,b)=>b.commission-a.commission);
+  const d=PROD.filter(p=>p.commission>=1000&&p.aum>50000).sort((a,b)=>b.commission-a.commission);
   const labels=d.map(p=>p.name);
   const comms=d.map(p=>p.commission);
   const roas=d.map(p=>p.roa_annual);
