@@ -285,33 +285,7 @@ td{padding:.45rem .7rem;border-bottom:1px solid rgba(42,53,85,.3);white-space:no
 </div>
 
 
-<div class="tab-content" id="tab-consulta">
-<div class="section-title">Consulta de Asesores por Cliente</div>
-<div class="analysis-card" style="margin-bottom:1rem"><div style="font-size:.75rem;color:var(--text-secondary);line-height:1.5">Subí un archivo Excel o CSV con nombres de clientes y te devuelve un PDF indicando <span style="color:var(--accent-teal);font-weight:600">a qué asesor corresponde cada uno</span>, su AUM, plataforma y saldos disponibles.</div></div>
-
-<div class="analysis-card" style="margin-bottom:1.5rem;text-align:center;padding:2rem">
-<div style="font-size:.85rem;font-weight:600;margin-bottom:1rem;color:var(--text-primary)">Subir archivo</div>
-<div style="font-size:.7rem;color:var(--text-muted);margin-bottom:1rem">Excel (.xlsx, .xls) o CSV — debe tener una columna con nombres de clientes</div>
-<input type="file" id="consultaFile" accept=".xlsx,.xls,.csv" style="display:none" onchange="processConsultaFile(this)">
-<button class="login-btn" style="max-width:300px;margin:0 auto" onclick="document.getElementById('consultaFile').click()">📁 Seleccionar archivo</button>
-<div id="consultaStatus" style="font-size:.75rem;color:var(--text-muted);margin-top:1rem"></div>
-</div>
-
-<div id="consultaResults" style="display:none">
-<div class="kpi-grid" style="margin-bottom:1rem">
-<div class="kpi-card"><div class="kpi-label">Clientes encontrados</div><div class="kpi-value green" id="crFound">—</div></div>
-<div class="kpi-card"><div class="kpi-label">No encontrados</div><div class="kpi-value" style="color:var(--negative)" id="crNotFound">—</div></div>
-<div class="kpi-card"><div class="kpi-label">Asesores involucrados</div><div class="kpi-value" style="color:var(--accent-teal)" id="crAdvisors">—</div></div>
-</div>
-
-<button class="login-btn" style="max-width:250px;margin-bottom:1.5rem;font-size:.78rem" onclick="exportConsultaPDF()">📄 Exportar PDF</button>
-
-<div class="growth-table-container"><div class="table-container"><table>
-<thead><tr><th>Cliente buscado</th><th>Asesor</th><th>Plataforma</th><th class="num">AUM</th><th class="num">Saldo $</th><th class="num">Saldo USD</th></tr></thead>
-<tbody id="consultaTable"></tbody>
-</table></div></div>
-</div>
-</div>
+<div class="tab-content" id="tab-consulta"><div class="section-title">Consulta de Tenencias por Cliente</div><div class="analysis-card" style="margin-bottom:1rem"><div style="font-size:.75rem;color:var(--text-secondary);line-height:1.5">Subí uno o varios reportes de tenencias —de <span style="color:#5b9cf5;font-weight:600">Balanz</span> (Reporte de Cuentas por Ticker) o de <span style="color:#00c853;font-weight:600">Inviu</span> (Tenencias)— y te devuelve los <span style="color:var(--accent-teal);font-weight:600">nominales que tiene cada cliente</span> por instrumento y a qué asesor corresponde. Podés cargar archivos de las dos plataformas juntos; detecta el formato solo.</div></div><div class="analysis-card" style="margin-bottom:1.5rem;text-align:center;padding:2rem"><div style="font-size:.85rem;font-weight:600;margin-bottom:1rem;color:var(--text-primary)">Subir reportes de tenencias</div><div style="font-size:.7rem;color:var(--text-muted);margin-bottom:1rem">Excel (.xlsx / .xls) de Balanz o Inviu — podés seleccionar varios a la vez</div><input type="file" id="consultaFile" accept=".xlsx,.xls" multiple style="display:none" onchange="processConsultaFile(this)"><button class="login-btn" style="max-width:300px;margin:0 auto" onclick="document.getElementById('consultaFile').click()">📁 Seleccionar archivos</button><div id="consultaStatus" style="font-size:.75rem;color:var(--text-muted);margin-top:1rem"></div></div><div id="consultaResults" style="display:none"><div class="kpi-grid" style="margin-bottom:1rem"><div class="kpi-card"><div class="kpi-label">Clientes</div><div class="kpi-value green" id="crFound">—</div></div><div class="kpi-card"><div class="kpi-label">Nominales totales</div><div class="kpi-value" style="color:var(--accent-teal)" id="crNom">—</div></div><div class="kpi-card"><div class="kpi-label">Instrumentos</div><div class="kpi-value" id="crTickers">—</div></div><div class="kpi-card"><div class="kpi-label">Asesores</div><div class="kpi-value" style="color:var(--accent-gold)" id="crAdvisors">—</div></div></div><div style="display:flex;gap:.6rem;align-items:center;margin-bottom:1rem;flex-wrap:wrap"><select id="consultaAdvFilter" onchange="renderHoldings()" style="padding:.5rem .8rem;border-radius:8px;border:1px solid var(--border);background:var(--bg-card);color:var(--text-primary);font-size:.78rem;max-width:240px"></select><input id="consultaSearch" oninput="renderHoldings()" placeholder="Buscar cliente o asesor..." style="flex:1;min-width:200px;padding:.5rem .8rem;border-radius:8px;border:1px solid var(--border);background:var(--bg-card);color:var(--text-primary);font-size:.78rem"><button class="login-btn" style="max-width:200px;font-size:.78rem;margin:0;background:var(--accent-teal);color:#06202b" onclick="exportConsultaPDF()">📄 PDF por asesor</button><button class="login-btn" style="max-width:170px;font-size:.78rem;margin:0" onclick="exportConsultaCSV()">📄 Exportar CSV</button><button class="login-btn" style="max-width:130px;font-size:.78rem;margin:0;background:var(--negative)" onclick="clearConsulta()">🗑 Limpiar</button></div><div id="consultaUnmatched" style="font-size:.72rem;color:var(--accent-gold);margin-bottom:.8rem"></div><div class="growth-table-container"><div class="table-container"><table><thead id="consultaThead"></thead><tbody id="consultaTable"></tbody><tfoot id="consultaFoot"></tfoot></table></div></div></div></div>
 
 </main>
 <footer class="footer"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2OTEuNzIgMzcxLjQyIj48ZGVmcz48c3R5bGU+LmNscy0xe2ZpbGw6IzAwNDNhYTt9LmNscy0ye2ZpbGw6I2I0YmQwMDt9LmNscy0ze2ZpbGw6IzYxYjBiYzt9PC9zdHlsZT48L2RlZnM+PGcgaWQ9IkNhcGFfMiIgZGF0YS1uYW1lPSJDYXBhIDIiPjxnIGlkPSJDYXBhXzEtMiIgZGF0YS1uYW1lPSJDYXBhIDEiPjxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTY2MC4xOSwyMzcuNjFxMzEuNDgtMzYuNSwzMS41My04Ni4zLDAtNTUuNTQtMzguNDEtOTQuMThUNTYxLjM4LDE4LjVhMTI4LjE2LDEyOC4xNiwwLDAsMC02NS42LDE3Ljc3LDEzMCwxMzAsMCwwLDAtNDgsNDcuOTRxLTE3LjQ2LDMwLjE4LTE3LjQ1LDY2LjI0LDAsNTQsMzcuNDksOTMuMDl0OTQuMTMsMzlxMzIuMTMsMCw1OC41Ny0xMy41OGw1LjIxLDYuNzdBOC4yNyw4LjI3LDAsMCwwLDYzMi4zLDI3OWg0My43NmE4LjI2LDguMjYsMCwwLDAsNi41NC0xMy4zWm0tOTguNDItMS4zNGE4Mi40NCw4Mi40NCwwLDAsMS01My4yNS0xOXEtMzAtMjQuMjctMzAtNjYsMC0zNy40NCwyMy43OC02MS43dDU5LTI0LjI4cTM0LjIyLDAsNTguMzQsMjVUNjQzLjg1LDE1MWE4Ny4yNCw4Ny4yNCwwLDAsMS0xNC4xMSw0OC4yMmwtOS0xMy43NGE4LjI2LDguMjYsMCwwLDAtNi41NC0zLjIxSDU3MC40N2E4LjI2LDguMjYsMCwwLDAtNi41NCwxMy4zMWwyNy4xNCwzNS4yM0E3OC41NSw3OC41NSwwLDAsMSw1NjEuNzcsMjM2LjI3WiIvPjxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTM3NS41LDI1LjExSDQwN2E3LjQ5LDcuNDksMCwwLDEsOCw3LjQ2VjI2OC4yM3MwLDguMzMtOC40NSw4LjMzSDM3NS43OWMtOC4wNiwwLTguMy03LjctOC4zLTcuN1YzMi41OVMzNjYuNjEsMjUuMTEsMzc1LjUsMjUuMTFaIi8+PHBhdGggY2xhc3M9ImNscy0xIiBkPSJNMjcxLjU3LDI3OS4yN0gyMjUuMzFhOC42OSw4LjY5LDAsMCwxLTYuOTEtMy40MWwtMTMuNjYtMTcuNzFIMTExLjQ2QTguNzIsOC43MiwwLDAsMSwxMDQsMjQ1TDE3MC40LDEzMy4wNmE4Ljc0LDguNzQsMCwwLDEsNy41MS00LjI3SDMwMS41OWE4LjcyLDguNzIsMCwwLDEsNy42LDEzTDI1NiwyMzYuMWwyMi40NiwyOS4xYTguNzQsOC43NCwwLDAsMS02LjkyLDE0LjA3WiIvPjxwYXRoIGNsYXNzPSJjbHMtMiIgZD0iTTgzLDI0Mi4zOGE4LjcxLDguNzEsMCwwLDEtNi45MS0zLjRMMy43NSwxNDUuNTFhOC43Myw4LjczLDAsMCwxLS43LTkuNjRMNjcuNDMsMjIuMWE4Ljc0LDguNzQsMCwwLDEsMTQuNTEtMWw3NC4zOSw5Ni4xOGE4Ljc0LDguNzQsMCwwLDEsLjU4LDkuODRsLTY2LjQ2LDExMWE4LjczLDguNzMsMCwwLDEtNyw0LjIzWiIvPjxwYXRoIGNsYXNzPSJjbHMtMyIgZD0iTTMwMC42MiwxMTQuMTRIMTc2Ljk0YTguNzMsOC43MywwLDAsMS02LjkxLTMuNEw5NS4zOSwxNC4wNkE4LjczLDguNzMsMCwwLDEsMTAyLjMsMEgyMjUuODdhOC43NSw4Ljc1LDAsMCwxLDYuOTEsMy4zOWw3NC43NSw5Ni42N2E4Ljc0LDguNzQsMCwwLDEtNi45MSwxNC4wOFoiLz48cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik0yNC41NiwzNDNjLTIuNTEtNC02LjU1LTQuNjItMTAuNDQtNC42N3MtMTAuNDMsMS40Ny0xMC40Myw3YzAsNC4zOCw0LjcyLDUuNDIsMTAuNTMsNi41LDYuNjQsMS4yOCwxMy41MywyLjQ2LDEzLjUzLDkuODksMCw3Ljc3LTcuODcsOS42NC0xMy42Myw5LjY0LTUuMzYsMC0xMS40Ni0yLjIxLTE0LjEyLTcuNDdsMi4zNi0xLjE5QzQuNDgsMzY2LjksOS44OSwzNjksMTQuMTIsMzY5czExLTEuMTgsMTEtNy4yOGMwLTUuMTctNS42Ni02LjMtMTEuMzItNy4zOEM3LjQ4LDM1My4wNywxLDM1MS43OSwxLDM0NS40NGMtLjE0LTcuMjgsNy40My05LjU0LDEzLjA5LTkuNTQsNC45MiwwLDkuMjEuNzgsMTIuNiw1Ljg1WiIvPjxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTY5LjA5LDM1My42NmMwLDktNS44MSwxNy43Ni0xNy4zNywxNy43NnMtMTcuMzctOC43Ni0xNy4zNy0xNy44Niw1Ljc1LTE3LjcxLDE3LjM3LTE3LjcxUzY5LjE0LDM0NC4zNiw2OS4wOSwzNTMuNjZaTTM3LDM1My42MWMwLDcuNzgsNSwxNS4zNSwxNC43NywxNS4zNXMxNC44MS03LjU3LDE0LjgxLTE1LjM1YzAtOC00LjkyLTE1LjMtMTQuODEtMTUuM1MzNi45LDM0NS40OSwzNywzNTMuNjFaIi8+PHBhdGggY2xhc3M9ImNscy0xIiBkPSJNODAuNSwzMzYuMzl2MzEuOTNIOTkuODl2Mi41MWgtMjJWMzM2LjM5WiIvPjxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTEzMS43MywzMzYuMzl2MjEuNGMwLDE4LTI2LjM4LDE4LjA2LTI2LjM4LDB2LTIxLjRIMTA4djIxLjRjMCwxNC44MiwyMS4xNiwxNC43NywyMS4xNiwwdi0yMS40WiIvPjxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTE2OS44NiwzNjYuMDZhMTcuNzUsMTcuNzUsMCwwLDEtMTIuNTUsNS4xN2MtMTEuNjEsMC0xNy42Ni04LjEyLTE3LjcxLTE3LjQyUzE0NS41LDMzNiwxNTcuMzEsMzM2YTE3Ljc1LDE3Ljc1LDAsMCwxLDEyLjU1LDUuMTdMMTY4LDM0Mi43NGExNSwxNSwwLDAsMC0xMC43My00LjM4Yy0xMCwwLTE1LjIsNy4wOC0xNS4xNSwxNS4zNS4wOSw4LjA3LDUuMjEsMTUuMDYsMTUuMTUsMTUuMDZhMTUuNDEsMTUuNDEsMCwwLDAsMTAuNzgtNC4zOFoiLz48cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik0xNzguNjIsMzcwLjgzVjMzNi4zOWgyLjYxdjM0LjQ0WiIvPjxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTIyNS41NiwzNTMuNjZjLS4wNSw5LTUuODEsMTcuNzYtMTcuMzcsMTcuNzZzLTE3LjM3LTguNzYtMTcuMzctMTcuODYsNS43Ni0xNy43MSwxNy4zNy0xNy43MVMyMjUuNjEsMzQ0LjM2LDIyNS41NiwzNTMuNjZabS0zMi4xMy0uMDVjMCw3Ljc4LDUsMTUuMzUsMTQuNzYsMTUuMzVTMjIzLDM2MS4zOSwyMjMsMzUzLjYxYzAtOC00LjkyLTE1LjMtMTQuODEtMTUuM1MxOTMuMzgsMzQ1LjQ5LDE5My40MywzNTMuNjFaIi8+PHBhdGggY2xhc3M9ImNscy0xIiBkPSJNMjM1LjUsMzM2LjM5bDIzLjE4LDI4LjQ5VjMzNi4zOWgyLjZ2MzQuNDRoLTFMMjM3LDM0Mi4zOXYyOC40NGgtMi42NVYzMzYuMzlaIi8+PHBhdGggY2xhc3M9ImNscy0xIiBkPSJNMjc0LDM1Mi4yOEgyOTQuMnYyLjQxSDI3NHYxMy41OWgyMS43NXYyLjU1SDI3MS40MlYzMzYuMzloMjMuNzd2Mi41MUgyNzRaIi8+PHBhdGggY2xhc3M9ImNscy0xIiBkPSJNMzI3LjQ3LDM0M2MtMi41MS00LTYuNTUtNC42Mi0xMC40NC00LjY3cy0xMC40MywxLjQ3LTEwLjQzLDdjMCw0LjM4LDQuNzMsNS40MiwxMC41Myw2LjUsNi42NSwxLjI4LDEzLjUzLDIuNDYsMTMuNTMsOS44OSwwLDcuNzctNy44Nyw5LjY0LTEzLjYzLDkuNjQtNS4zNiwwLTExLjQ2LTIuMjEtMTQuMTItNy40N2wyLjM2LTEuMTlDMzA3LjM5LDM2Ni45LDMxMi44LDM2OSwzMTcsMzY5czExLTEuMTgsMTEtNy4yOGMuMDUtNS4xNy01LjY2LTYuMy0xMS4zMi03LjM4LTYuMy0xLjIzLTEyLjc1LTIuNTEtMTIuNzUtOC44Ni0uMTQtNy4yOCw3LjQzLTkuNTQsMTMuMDktOS41NCw0LjkyLDAsOS4yMS43OCwxMi42LDUuODVaIi8+PHBhdGggY2xhc3M9ImNscy0xIiBkPSJNMzU3LjM4LDM1Mi43N2gxOS44M3YyLjUxSDM1Ny4zOHYxNS42aC0yLjY2VjMzNi4zOUgzNzcuOVYzMzlIMzU3LjM4WiIvPjxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTM4Ni43NiwzNzAuODNWMzM2LjM5aDIuNnYzNC40NFoiLz48cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik00MDAuNTgsMzM2LjM5bDIzLjE4LDI4LjQ5VjMzNi4zOWgyLjYxdjM0LjQ0aC0xbC0yMy4yMy0yOC40NHYyOC40NGgtMi42NlYzMzYuMzlaIi8+PHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNDYzLjkxLDM3MC44M2wtMy43OC04LjQ2SDQzOS41NmwtMy43NCw4LjQ2SDQzM2wxNS40NS0zNC40NGgyLjkxbDE1LjQ1LDM0LjQ0Wm0tNC44Mi0xMC45Mi05LjI1LTIxLTkuMjUsMjFaIi8+PHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNDc0LjgzLDMzNi4zOSw0OTgsMzY0Ljg4VjMzNi4zOWgyLjYxdjM0LjQ0aC0xbC0yMy4yMy0yOC40NHYyOC40NEg0NzMuN1YzMzYuMzlaIi8+PHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNTM5LjIsMzY2LjA2YTE3Ljc3LDE3Ljc3LDAsMCwxLTEyLjU1LDUuMTdjLTExLjYxLDAtMTcuNjctOC4xMi0xNy43Mi0xNy40MlM1MTQuODQsMzM2LDUyNi42NSwzMzZhMTcuNzcsMTcuNzcsMCwwLDEsMTIuNTUsNS4xN2wtMS44MiwxLjU4YTE1LjA2LDE1LjA2LDAsMCwwLTEwLjczLTQuMzhjLTEwLDAtMTUuMjEsNy4wOC0xNS4xNiwxNS4zNS4xLDguMDcsNS4yMiwxNS4wNiwxNS4xNiwxNS4wNmExNS40MywxNS40MywwLDAsMCwxMC43OC00LjM4WiIvPjxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTU0OCwzNzAuODNWMzM2LjM5aDIuNjF2MzQuNDRaIi8+PHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNTYzLjIxLDM1Mi4yOGgyMC4xN3YyLjQxSDU2My4yMXYxMy41OUg1ODV2Mi41NUg1NjAuNlYzMzYuMzloMjMuNzd2Mi41MUg1NjMuMjFaIi8+PHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNjIwLjc4LDM3MC44M2gtMy40OWwtMTEuOTEtMTNINTk2djEzaC0yLjY2VjMzNi4zOWgxNS4xNmM3LjQ4LDAsMTEuMjcsNS4zNiwxMS4zMiwxMC43My4wNSw1LjYtMy42NSwxMC41My0xMS4xNywxMC41M1pNNTk2LDM1NS4yOGgxMi4yYzYsMCw4LjY2LTMuMzksOC43MS04LjIxLjA1LTQtMi43LTguMjItOC40MS04LjIySDU5NloiLz48cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik02NTUuMDgsMzcwLjgzbC0zLjc5LTguNDZINjMwLjcyTDYyNywzNzAuODNoLTIuODZsMTUuNDYtMzQuNDRoMi45bDE1LjQ1LDM0LjQ0Wm0tNC44My0xMC45Mkw2NDEsMzM5bC05LjI1LDIxWiIvPjxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTY4Ni42MiwzNDNjLTIuNTEtNC02LjU1LTQuNjItMTAuNDMtNC42Ny00LDAtMTAuNDQsMS40Ny0xMC40NCw3LDAsNC4zOCw0LjczLDUuNDIsMTAuNTMsNi41LDYuNjUsMS4yOCwxMy41NCwyLjQ2LDEzLjU0LDkuODktLjA1LDcuNzctNy44OCw5LjY0LTEzLjYzLDkuNjQtNS4zNywwLTExLjQ3LTIuMjEtMTQuMTMtNy40N2wyLjM2LTEuMTljMi4xMiw0LjE5LDcuNTMsNi4yNSwxMS43Nyw2LjI1czExLTEuMTgsMTEtNy4yOGMuMDUtNS4xNy01LjY2LTYuMy0xMS4zMi03LjM4LTYuMy0xLjIzLTEyLjc0LTIuNTEtMTIuNzQtOC44Ni0uMTUtNy4yOCw3LjQzLTkuNTQsMTMuMDktOS41NCw0LjkyLDAsOS4yLjc4LDEyLjU5LDUuODVaIi8+PC9nPjwvZz48L3N2Zz4=" alt="IQ" class="footer-logo"><br>© 2025 IQ Soluciones Financieras S.A.</footer>
@@ -674,111 +648,122 @@ function populateGaussSelect(){
 }
 
 
+function _normName(s){return String(s||'').trim().toUpperCase().replace(/\.+$/,'').replace(/,/g,' ').replace(/\s+/g,' ').trim();}
+let _cliAdvMap=null;
+function _buildCliAdv(){if(_cliAdvMap)return _cliAdvMap;_cliAdvMap={};DATA.forEach(a=>{(a.clients||[]).forEach(c=>{_cliAdvMap[_normName(c.name)]=a.name;});});return _cliAdvMap;}
+const _inviuCodeMap={'ADIEZ':'DIEZ ANABELLA','ARODRIGUEZ':'RODRIGUEZ ANA','FBUSCONI':'BUSCONI GUIDOT FRANCO','VMONROY':'MONROY VICTORIA','ARCIFA':'ARCIFA VALERIA','VALE.ARCIFA':'ARCIFA VALERIA'};
+function _advFromInviuCode(code){if(!code)return null;let c=String(code).toUpperCase().replace(/\.INVIU$/,'').trim();return _inviuCodeMap[c]||null;}
+window._holdings=window._holdings||[];
 function processConsultaFile(input){
-  const file=input.files[0];if(!file)return;
-  document.getElementById('consultaStatus').textContent='Procesando '+file.name+'...';
-  const reader=new FileReader();
-  reader.onload=function(e){
-    try{
-      let names=[];
-      if(file.name.endsWith('.csv')){
-        const text=e.target.result;
-        const lines=text.split('\n');
-        names=lines.map(l=>l.split(',')[0].trim().replace(/"/g,'')).filter(n=>n&&n.length>2);
-      }else{
-        const data=new Uint8Array(e.target.result);
-        const wb=XLSX.read(data,{type:'array'});
+  const files=input.files;if(!files||!files.length)return;
+  const map=_buildCliAdv();const status=document.getElementById('consultaStatus');
+  status.textContent='Procesando '+files.length+' archivo(s)...';
+  let pending=files.length;let errs=[];
+  Array.from(files).forEach(file=>{
+    const reader=new FileReader();
+    reader.onload=function(e){
+      try{
+        const wb=XLSX.read(new Uint8Array(e.target.result),{type:'array'});
         const ws=wb.Sheets[wb.SheetNames[0]];
-        const rows=XLSX.utils.sheet_to_json(ws,{header:1});
-        // Try to find the column with names (skip header if it looks like a header)
-        const startRow=rows[0]&&typeof rows[0][0]==='string'&&rows[0][0].toLowerCase().match(/nombre|cliente|cuenta|titular/)?1:0;
-        for(let i=startRow;i<rows.length;i++){
-          const row=rows[i];
-          // Check first few columns for name-like values
-          for(let j=0;j<Math.min(3,row.length);j++){
-            const val=String(row[j]||'').trim();
-            if(val.length>3&&isNaN(val)&&!val.match(/^[0-9.,-]+$/)){
-              names.push(val);break;
-            }
-          }
+        const rows=XLSX.utils.sheet_to_json(ws,{defval:''});
+        const cols=rows.length?Object.keys(rows[0]).map(k=>k.toLowerCase().trim()):[];
+        let fmt=null;
+        if(cols.includes('descripcioncuenta')&&cols.includes('cantidad'))fmt='balanz';
+        else if(cols.includes('cliente')&&cols.includes('cantidad'))fmt='inviu';
+        if(!fmt){errs.push(file.name+' (formato no reconocido)');}
+        else{
+          rows.forEach(r=>{
+            const g=n=>{for(const k in r){if(k.toLowerCase().trim()===n)return r[k];}return undefined;};
+            let client,ticker,nominales,platform,monto=null,rawAdv=null;
+            if(fmt==='balanz'){client=g('descripcioncuenta');ticker=g('ticker');nominales=g('cantidad');platform='Balanz';rawAdv=g('asesor');}
+            else{client=g('cliente');ticker=g('instrumento');nominales=g('cantidad');platform='Inviu';monto=g('monto total');rawAdv=g('asesor');}
+            if(client===undefined||String(client).trim()==='')return;
+            const nm=_normName(client);
+            const adv=map[nm]||(fmt==='inviu'?_advFromInviuCode(rawAdv):null)||'Sin asesor';
+            window._holdings.push({client:String(client).trim(),platform:platform,advisor:adv,ticker:String(ticker||'').trim(),nominales:Number(nominales)||0,monto:monto!=null&&monto!==''?Number(monto)||0:null,file:file.name});
+          });
         }
-      }
-      matchConsultaNames(names);
-    }catch(err){
-      document.getElementById('consultaStatus').textContent='Error al leer el archivo: '+err.message;
-    }
-  };
-  if(file.name.endsWith('.csv'))reader.readAsText(file);
-  else reader.readAsArrayBuffer(file);
-}
-
-function matchConsultaNames(names){
-  const results=[];
-  const advisorSet=new Set();
-  let found=0,notFound=0;
-  
-  names.forEach(searchName=>{
-    const sn=searchName.toUpperCase().trim();
-    let match=null;
-    // Search through all advisors and clients
-    for(const a of DATA){
-      for(const c of a.clients){
-        const cn=c.name.toUpperCase();
-        // Exact match
-        if(cn===sn){match={client:c,advisor:a.name};break}
-        // Partial match (2+ words in common)
-        const sp=new Set(sn.replace(/[,./]/g,' ').split(/\s+/).filter(w=>w.length>2));
-        const cp=new Set(cn.replace(/[,./]/g,' ').split(/\s+/).filter(w=>w.length>2));
-        let overlap=0;sp.forEach(w=>{if(cp.has(w))overlap++});
-        if(overlap>=2){match={client:c,advisor:a.name};break}
-      }
-      if(match)break;
-    }
-    if(match){
-      found++;advisorSet.add(match.advisor);
-      results.push({search:searchName,advisor:match.advisor,client:match.client,found:true});
-    }else{
-      notFound++;
-      results.push({search:searchName,advisor:'—',client:null,found:false});
-    }
+      }catch(err){errs.push(file.name+' ('+err.message+')');}
+      pending--;
+      if(pending===0){renderHoldings();if(errs.length)status.textContent='⚠ No se pudieron leer: '+errs.join(', ');}
+    };
+    reader.readAsArrayBuffer(file);
   });
-  
-  document.getElementById('crFound').textContent=found;
-  document.getElementById('crNotFound').textContent=notFound;
-  document.getElementById('crAdvisors').textContent=advisorSet.size;
-  document.getElementById('consultaResults').style.display='block';
-  document.getElementById('consultaStatus').textContent='✓ '+names.length+' nombres procesados';
-  
-  const tbody=document.getElementById('consultaTable');
-  tbody.innerHTML=results.map(r=>{
-    if(r.found){
-      const pc=r.client.platform==='INVIU'?'plat-inviu':'plat-balanz';
-      return`<tr style="cursor:pointer" onclick="goToAdvisorByName('${r.advisor.replace(/'/g,"\'")}')"><td>${r.search}</td><td style="font-weight:600;color:var(--accent-teal)">${r.advisor}</td><td><span class="plat-badge ${pc}">${r.client.platform}</span></td><td class="num">${fmt(r.client.aum)}</td><td class="num">${fmt(r.client.pesos)}</td><td class="num">${fmt(r.client.usd)}</td></tr>`;
-    }else{
-      return`<tr><td>${r.search}</td><td style="color:var(--negative)">No encontrado</td><td>—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>`;
-    }
-  }).join('');
-  
-  window._consultaResults=results;
+  input.value='';
+}
+function clearConsulta(){window._holdings=[];const s=document.getElementById('consultaSearch');if(s)s.value='';renderHoldings();document.getElementById('consultaStatus').textContent='';}
+function _holdAdvisors(H){const set=[...new Set(H.map(h=>h.advisor))];set.sort((a,b)=>{if(a==='Sin asesor')return 1;if(b==='Sin asesor')return -1;return a.localeCompare(b);});return set;}
+function renderHoldings(){
+  const H=window._holdings||[];const res=document.getElementById('consultaResults');
+  if(!H.length){res.style.display='none';return;}
+  res.style.display='block';
+  const sel=document.getElementById('consultaAdvFilter');
+  const advAll=_holdAdvisors(H);const cur=sel.value||'__all__';
+  sel.innerHTML='<option value="__all__">Todos los asesores ('+advAll.length+')</option>'+advAll.map(a=>'<option value="'+a.replace(/"/g,'&quot;')+'">'+a+'</option>').join('');
+  sel.value=(cur==='__all__'||advAll.indexOf(cur)>=0)?cur:'__all__';
+  const advFilter=sel.value;
+  const scoped=advFilter==='__all__'?H:H.filter(h=>h.advisor===advFilter);
+  const tickers=[...new Set(scoped.map(h=>h.ticker).filter(Boolean))].sort();
+  const pivot={};
+  scoped.forEach(h=>{const key=h.advisor+'||'+h.client+'||'+h.platform;if(!pivot[key])pivot[key]={advisor:h.advisor,client:h.client,platform:h.platform,tk:{},total:0};pivot[key].tk[h.ticker]=(pivot[key].tk[h.ticker]||0)+h.nominales;pivot[key].total+=h.nominales;});
+  let list=Object.values(pivot);
+  const nClients=new Set(scoped.map(h=>_normName(h.client))).size;
+  const totalNom=scoped.reduce((s,h)=>s+h.nominales,0);
+  const advSet=new Set(scoped.filter(h=>h.advisor!=='Sin asesor').map(h=>h.advisor));
+  document.getElementById('crFound').textContent=nClients.toLocaleString('es-AR');
+  document.getElementById('crNom').textContent=Math.round(totalNom).toLocaleString('es-AR');
+  document.getElementById('crTickers').textContent=tickers.length;
+  document.getElementById('crAdvisors').textContent=advSet.size;
+  const nUn=new Set(scoped.filter(h=>h.advisor==='Sin asesor').map(h=>_normName(h.client))).size;
+  document.getElementById('consultaUnmatched').textContent=nUn?('⚠ '+nUn+' cliente(s) sin asesor asignado (no figuran en la base de clientes).'):'';
+  const q=(document.getElementById('consultaSearch')&&document.getElementById('consultaSearch').value||'').toUpperCase();
+  if(q)list=list.filter(p=>p.client.toUpperCase().includes(q)||p.advisor.toUpperCase().includes(q));
+  list.sort((a,b)=>a.advisor.localeCompare(b.advisor)||a.client.localeCompare(b.client));
+  window._holdPivot={list:list,tickers:tickers};
+  document.getElementById('consultaThead').innerHTML='<tr><th>Cliente</th><th>Asesor</th><th>Plataforma</th>'+tickers.map(t=>'<th class="num">'+t+'</th>').join('')+'<th class="num">Total nominales</th></tr>';
+  document.getElementById('consultaTable').innerHTML=list.map(p=>{const pc=p.platform==='Balanz'?'#5b9cf5':'#00c853';const ah=p.advisor==='Sin asesor'?'<span style="color:var(--text-muted)">Sin asesor</span>':p.advisor;return '<tr><td style="font-weight:500">'+p.client+'</td><td>'+ah+'</td><td><span style="color:'+pc+';font-weight:600">'+p.platform+'</span></td>'+tickers.map(t=>'<td class="num">'+(p.tk[t]?Math.round(p.tk[t]).toLocaleString('es-AR'):'—')+'</td>').join('')+'<td class="num" style="font-weight:600">'+Math.round(p.total).toLocaleString('es-AR')+'</td></tr>';}).join('');
+  const tot={};tickers.forEach(t=>tot[t]=list.reduce((s,p)=>s+(p.tk[t]||0),0));
+  const grand=list.reduce((s,p)=>s+p.total,0);
+  document.getElementById('consultaFoot').innerHTML='<tr style="border-top:2px solid var(--border)"><td style="font-weight:700">TOTAL ('+list.length+')</td><td></td><td></td>'+tickers.map(t=>'<td class="num" style="font-weight:700">'+Math.round(tot[t]).toLocaleString('es-AR')+'</td>').join('')+'<td class="num" style="font-weight:700">'+Math.round(grand).toLocaleString('es-AR')+'</td></tr>';
+  if(!q)document.getElementById('consultaStatus').textContent='✓ '+H.length+' filas de '+(new Set(H.map(h=>h.file)).size)+' archivo(s) · '+nClients+' clientes'+(advFilter!=='__all__'?' · filtrado: '+advFilter:'');
+}
+function exportConsultaCSV(){
+  const d=window._holdPivot;if(!d||!d.list.length)return;
+  const tickers=d.tickers;let csv='Cliente,Asesor,Plataforma,'+tickers.join(',')+',Total\n';
+  d.list.forEach(p=>{const esc=v=>'"'+String(v).replace(/"/g,'""')+'"';csv+=esc(p.client)+','+esc(p.advisor)+','+p.platform+','+tickers.map(t=>p.tk[t]||0).join(',')+','+p.total+'\n';});
+  const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='consulta_nominales.csv';document.body.appendChild(a);a.click();a.remove();
 }
 
 function exportConsultaPDF(){
-  const results=window._consultaResults;if(!results)return;
-  const w=window.open('','_blank');
-  w.document.write('<!DOCTYPE html><html><head><title>Consulta de Asesores</title><style>body{font-family:Arial,sans-serif;padding:40px;color:#1a2035;font-size:12px}h1{font-size:20px;color:#0043aa;border-bottom:2px solid #0043aa;padding-bottom:8px}table{width:100%;border-collapse:collapse;margin-top:15px;font-size:11px}th{background:#0043aa;color:white;padding:6px 8px;text-align:left;font-size:9px;text-transform:uppercase}td{padding:5px 8px;border-bottom:1px solid #eee}tr:nth-child(even){background:#f9fafb}.num{text-align:right;font-family:monospace}.found{color:#047857}.notfound{color:#b91c1c}.footer{margin-top:30px;text-align:center;color:#999;font-size:10px;border-top:1px solid #ddd;padding-top:10px}@media print{body{padding:20px}}</style></head><body>');
-  w.document.write('<h1>IQ Soluciones Financieras — Consulta de Asesores</h1>');
-  w.document.write('<p style="color:#666;font-size:11px">Generado: '+new Date().toLocaleDateString('es-AR')+' · '+results.length+' clientes consultados</p>');
-  w.document.write('<table><thead><tr><th>Cliente</th><th>Asesor</th><th>Plataforma</th><th class="num">AUM (USD)</th><th class="num">Saldo $</th><th class="num">Saldo USD</th></tr></thead><tbody>');
-  results.forEach(r=>{
-    if(r.found){
-      w.document.write('<tr><td>'+r.search+'</td><td class="found" style="font-weight:bold">'+r.advisor+'</td><td>'+r.client.platform+'</td><td class="num">'+r.client.aum.toLocaleString('es-AR',{minimumFractionDigits:2})+'</td><td class="num">'+r.client.pesos.toLocaleString('es-AR',{minimumFractionDigits:2})+'</td><td class="num">'+r.client.usd.toLocaleString('es-AR',{minimumFractionDigits:2})+'</td></tr>');
-    }else{
-      w.document.write('<tr><td>'+r.search+'</td><td class="notfound">No encontrado</td><td>—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>');
-    }
+  let H=window._holdings||[];if(!H.length)return;
+  const sel=document.getElementById('consultaAdvFilter');const advFilter=sel?sel.value:'__all__';
+  if(advFilter&&advFilter!=='__all__')H=H.filter(h=>h.advisor===advFilter);
+  if(!H.length){alert('No hay tenencias para ese asesor.');return;}
+  const tickers=[...new Set(H.map(h=>h.ticker).filter(Boolean))].sort();
+  const byAdv={};
+  H.forEach(h=>{if(!byAdv[h.advisor])byAdv[h.advisor]={};const k=h.client+'||'+h.platform;if(!byAdv[h.advisor][k])byAdv[h.advisor][k]={client:h.client,platform:h.platform,tk:{},total:0};byAdv[h.advisor][k].tk[h.ticker]=(byAdv[h.advisor][k].tk[h.ticker]||0)+h.nominales;byAdv[h.advisor][k].total+=h.nominales;});
+  const advisors=Object.keys(byAdv).sort((a,b)=>{if(a==='Sin asesor')return 1;if(b==='Sin asesor')return -1;return a.localeCompare(b);});
+  const fmt=n=>Math.round(n).toLocaleString('es-AR');
+  const today=new Date().toLocaleDateString('es-AR');
+  let grand={};tickers.forEach(t=>grand[t]=0);let grandTotal=0,grandClients=0;
+  let body='';
+  advisors.forEach(adv=>{
+    const rows=Object.values(byAdv[adv]).sort((a,b)=>b.total-a.total);
+    const sub={};tickers.forEach(t=>sub[t]=0);let subTotal=0;
+    rows.forEach(r=>{tickers.forEach(t=>sub[t]+=(r.tk[t]||0));subTotal+=r.total;});
+    tickers.forEach(t=>grand[t]+=sub[t]);grandTotal+=subTotal;grandClients+=rows.length;
+    body+='<div class="advb"><h2>'+adv+' <span class="cnt">('+rows.length+' cliente'+(rows.length!==1?'s':'')+')</span></h2>';
+    body+='<table><thead><tr><th>Cliente</th><th>Plataforma</th>'+tickers.map(t=>'<th class="n">'+t+'</th>').join('')+'<th class="n">Total nominales</th></tr></thead><tbody>';
+    rows.forEach(r=>{body+='<tr><td>'+r.client+'</td><td>'+r.platform+'</td>'+tickers.map(t=>'<td class="n">'+(r.tk[t]?fmt(r.tk[t]):'—')+'</td>').join('')+'<td class="n b">'+fmt(r.total)+'</td></tr>';});
+    body+='<tr class="sub"><td colspan="2">Subtotal</td>'+tickers.map(t=>'<td class="n">'+fmt(sub[t])+'</td>').join('')+'<td class="n b">'+fmt(subTotal)+'</td></tr>';
+    body+='</tbody></table></div>';
   });
-  w.document.write('</tbody></table>');
-  w.document.write('<div class="footer">IQ Soluciones Financieras S.A. · Documento confidencial</div>');
-  w.document.write("<script>setTimeout(()=>window.print(),500)<"+"/script></body></html>");
+  if(advisors.length>1)body+='<table class="gt"><tbody><tr><td colspan="2">TOTAL GENERAL · '+grandClients+' clientes</td>'+tickers.map(t=>'<td class="n">'+fmt(grand[t])+'</td>').join('')+'<td class="n b">'+fmt(grandTotal)+'</td></tr></tbody></table>';
+  const scopeTitle=(advFilter&&advFilter!=='__all__')?advFilter:'Todos los asesores';
+  const w=window.open('','_blank');
+  if(!w){alert('El navegador bloqueó la ventana de impresión. Permití pop-ups para este sitio.');return;}
+  const css='body{font-family:Arial,Helvetica,sans-serif;color:#1a1a1a;margin:30px;font-size:12px}h1{font-size:18px;margin:0 0 2px;color:#0a2540}.meta{color:#666;font-size:11px;margin-bottom:18px}.advb{margin-bottom:16px;page-break-inside:avoid}h2{font-size:13px;background:#0a2540;color:#fff;padding:6px 10px;border-radius:4px;margin:0 0 6px}h2 .cnt{font-weight:normal;opacity:.85;font-size:11px}table{width:100%;border-collapse:collapse;margin-bottom:4px}th,td{border:1px solid #dde3ea;padding:4px 7px;text-align:left}th{background:#eef2f7;font-size:11px}td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}td.b{font-weight:700}tr.sub td{background:#eef4fb;font-weight:600}table.gt td{background:#0a2540;color:#fff;font-weight:700;border:1px solid #0a2540;padding:7px 10px;font-size:12px}@media print{body{margin:12px}}';
+  w.document.write('<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><title>Tenencias — '+scopeTitle+'</title><style>'+css+'</style></head><body><h1>IQ Soluciones Financieras — Tenencias por Asesor</h1><div class="meta">Generado el '+today+' · '+scopeTitle+' · Instrumentos: '+tickers.join(', ')+'</div>'+body+'<'+'script>window.onload=function(){setTimeout(function(){window.print();},200);}<\/'+'script></body></html>');
   w.document.close();
 }
 
