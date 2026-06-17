@@ -744,6 +744,7 @@ function exportConsultaPDF(){
   H.forEach(h=>{if(!byAdv[h.advisor])byAdv[h.advisor]={};const k=h.client+'||'+h.platform;if(!byAdv[h.advisor][k])byAdv[h.advisor][k]={client:h.client,platform:h.platform,tk:{},total:0};byAdv[h.advisor][k].tk[h.ticker]=(byAdv[h.advisor][k].tk[h.ticker]||0)+h.nominales;byAdv[h.advisor][k].total+=h.nominales;});
   const advisors=Object.keys(byAdv).sort((a,b)=>{if(a==='Sin asesor')return 1;if(b==='Sin asesor')return -1;return a.localeCompare(b);});
   const fmt=n=>Math.round(n).toLocaleString('es-AR');
+  const pcell=p=>'<td><span class="'+(p==='Balanz'?'bal':'inv')+'">'+p+'</span></td>';
   const today=new Date().toLocaleDateString('es-AR');
   let grand={};tickers.forEach(t=>grand[t]=0);let grandTotal=0,grandClients=0;
   let body='';
@@ -754,7 +755,7 @@ function exportConsultaPDF(){
     tickers.forEach(t=>grand[t]+=sub[t]);grandTotal+=subTotal;grandClients+=rows.length;
     body+='<div class="advb"><h2>'+adv+' <span class="cnt">('+rows.length+' cliente'+(rows.length!==1?'s':'')+')</span></h2>';
     body+='<table><thead><tr><th>Cliente</th><th>Plataforma</th>'+tickers.map(t=>'<th class="n">'+t+'</th>').join('')+'<th class="n">Total nominales</th></tr></thead><tbody>';
-    rows.forEach(r=>{body+='<tr><td>'+r.client+'</td><td>'+r.platform+'</td>'+tickers.map(t=>'<td class="n">'+(r.tk[t]?fmt(r.tk[t]):'—')+'</td>').join('')+'<td class="n b">'+fmt(r.total)+'</td></tr>';});
+    rows.forEach(r=>{body+='<tr><td>'+r.client+'</td>'+pcell(r.platform)+tickers.map(t=>'<td class="n">'+(r.tk[t]?fmt(r.tk[t]):'—')+'</td>').join('')+'<td class="n b">'+fmt(r.total)+'</td></tr>';});
     body+='<tr class="sub"><td colspan="2">Subtotal</td>'+tickers.map(t=>'<td class="n">'+fmt(sub[t])+'</td>').join('')+'<td class="n b">'+fmt(subTotal)+'</td></tr>';
     body+='</tbody></table></div>';
   });
@@ -762,8 +763,8 @@ function exportConsultaPDF(){
   const scopeTitle=(advFilter&&advFilter!=='__all__')?advFilter:'Todos los asesores';
   const w=window.open('','_blank');
   if(!w){alert('El navegador bloqueó la ventana de impresión. Permití pop-ups para este sitio.');return;}
-  const css='body{font-family:Arial,Helvetica,sans-serif;color:#1a1a1a;margin:30px;font-size:12px}h1{font-size:18px;margin:0 0 2px;color:#0a2540}.meta{color:#666;font-size:11px;margin-bottom:18px}.advb{margin-bottom:16px;page-break-inside:avoid}h2{font-size:13px;background:#0a2540;color:#fff;padding:6px 10px;border-radius:4px;margin:0 0 6px}h2 .cnt{font-weight:normal;opacity:.85;font-size:11px}table{width:100%;border-collapse:collapse;margin-bottom:4px}th,td{border:1px solid #dde3ea;padding:4px 7px;text-align:left}th{background:#eef2f7;font-size:11px}td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}td.b{font-weight:700}tr.sub td{background:#eef4fb;font-weight:600}table.gt td{background:#0a2540;color:#fff;font-weight:700;border:1px solid #0a2540;padding:7px 10px;font-size:12px}@media print{body{margin:12px}}';
-  w.document.write('<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><title>Tenencias — '+scopeTitle+'</title><style>'+css+'</style></head><body><h1>IQ Soluciones Financieras — Tenencias por Asesor</h1><div class="meta">Generado el '+today+' · '+scopeTitle+' · Instrumentos: '+tickers.join(', ')+'</div>'+body+'<'+'script>window.onload=function(){setTimeout(function(){window.print();},200);}<\/'+'script></body></html>');
+  const css='*{box-sizing:border-box}html,body{-webkit-print-color-adjust:exact;print-color-adjust:exact}body{font-family:Arial,Helvetica,sans-serif;color:#f0f2f8;background:#0a0e1a;margin:0;padding:30px;font-size:12px}.hd{border-bottom:2px solid #61b0bc;padding-bottom:9px;margin-bottom:5px}h1{font-size:18px;margin:0;font-weight:700;letter-spacing:.4px;color:#f0f2f8}h1 b{color:#61b0bc;font-weight:700}.meta{color:#8892b0;font-size:11px;margin-bottom:18px}.advb{margin-bottom:15px;page-break-inside:avoid}h2{font-size:13px;background:#1f2847;color:#f0f2f8;padding:7px 12px;border-left:4px solid #61b0bc;border-radius:4px;margin:0 0 6px}h2 .cnt{font-weight:normal;color:#61b0bc;font-size:11px}table{width:100%;border-collapse:collapse;margin-bottom:4px;background:#131a2e}th,td{border:1px solid #2a3555;padding:5px 8px;text-align:left}th{background:#232c48;color:#8892b0;font-size:10px;text-transform:uppercase;letter-spacing:.4px}td{color:#f0f2f8}td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}td.b{font-weight:700;color:#61b0bc}.bal{color:#5b9cf5;font-weight:600}.inv{color:#00c853;font-weight:600}tr.sub td{background:#1a2035;font-weight:600;color:#aeb8d4}table.gt{margin-top:8px}table.gt td{background:#61b0bc;color:#06202b;font-weight:700;border:1px solid #61b0bc;padding:8px 12px;font-size:12px}@media print{body{padding:14px}}';
+  w.document.write('<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><title>Tenencias — '+scopeTitle+'</title><style>'+css+'</style></head><body><div class="hd"><h1>IQ <b>Soluciones Financieras</b> · Tenencias por Asesor</h1></div><div class="meta">Generado el '+today+' · '+scopeTitle+' · Instrumentos: '+tickers.join(', ')+'</div>'+body+'<'+'script>window.onload=function(){setTimeout(function(){window.print();},250);}<\/'+'script></body></html>');
   w.document.close();
 }
 
